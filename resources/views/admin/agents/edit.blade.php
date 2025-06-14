@@ -1,0 +1,177 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="min-h-screen bg-gray-50">
+    <!-- En-tête orange -->
+    <div class="bg-orange-500 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex items-center justify-between">
+                <h1 class="text-2xl font-bold text-white">Modifier l'agent: {{ $agent->prenom }} {{ $agent->nom }}</h1>
+                <a href="{{ route('admin.agents.index') }}" 
+                   class="text-white hover:text-orange-100 font-medium">
+                    ← Retour à la liste
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Carte blanche -->
+            <div class="bg-white overflow-hidden shadow rounded-lg">
+                <div class="px-6 py-6">
+                    @if ($errors->any())
+                        <div class="mb-6 bg-red-50 border-l-4 border-red-500 p-4">
+                            <div class="text-red-700 font-medium">Veuillez corriger les erreurs ci-dessous</div>
+                        </div>
+                    @endif
+
+                    <form method="POST" action="{{ route('admin.agents.update', $agent) }}" class="space-y-6">
+                        @csrf
+                        @method('PUT')
+
+                        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                            <!-- Prénom -->
+                            <div>
+                                <label for="prenom" class="block text-sm font-medium text-gray-700">Prénom</label>
+                                <input type="text" id="prenom" name="prenom" value="{{ old('prenom', $agent->prenom) }}"
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500
+                                    @error('prenom') border-red-500 @enderror" required>
+                                @error('prenom')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Nom -->
+                            <div>
+                                <label for="nom" class="block text-sm font-medium text-gray-700">Nom</label>
+                                <input type="text" id="nom" name="nom" value="{{ old('nom', $agent->nom) }}"
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500
+                                    @error('nom') border-red-500 @enderror" required>
+                                @error('nom')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Email -->
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                                <input type="email" id="email" name="email" value="{{ old('email', $agent->email) }}"
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500
+                                    @error('email') border-red-500 @enderror" required>
+                                @error('email')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Téléphone -->
+                            <div>
+                                <label for="telephone" class="block text-sm font-medium text-gray-700">Téléphone</label>
+                                <input type="tel" id="telephone" name="telephone" value="{{ old('telephone', $agent->telephone) }}"
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500
+                                    @error('telephone') border-red-500 @enderror" required>
+                                @error('telephone')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Sexe -->
+                            <div>
+                                <label for="sexe" class="block text-sm font-medium text-gray-700">Sexe</label>
+                                <select id="sexe" name="sexe"
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500
+                                    @error('sexe') border-red-500 @enderror" required>
+                                    <option value="">Sélectionnez...</option>
+                                    <option value="homme" {{ old('sexe', $agent->sexe) == 'homme' ? 'selected' : '' }}>Homme</option>
+                                    <option value="femme" {{ old('sexe', $agent->sexe) == 'femme' ? 'selected' : '' }}>Femme</option>
+                                </select>
+                                @error('sexe')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Adresse -->
+                            <div>
+                                <label for="adresse" class="block text-sm font-medium text-gray-700">Adresse</label>
+                                <input type="text" id="adresse" name="adresse" value="{{ old('adresse', $agent->adresse) }}"
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500
+                                    @error('adresse') border-red-500 @enderror" required>
+                                @error('adresse')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Statut -->
+                            <div>
+                                <label for="statut" class="block text-sm font-medium text-gray-700">Statut</label>
+                                <select id="statut" name="statut"
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500
+                                    @error('statut') border-red-500 @enderror" required>
+                                    <option value="">Sélectionnez...</option>
+                                    <option value="agent" {{ old('statut', $agent->statut) == 'agent' ? 'selected' : '' }}>Agent</option>
+                                    <option value="admin" {{ old('statut', $agent->statut) == 'admin' ? 'selected' : '' }}>Administrateur</option>
+                                </select>
+                                @error('statut')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Mot de passe -->
+                            <div class="sm:col-span-2">
+                                <div class="bg-green-50 p-4 rounded-lg border border-green-100">
+                                    <h3 class="text-sm font-medium text-green-800">Modification du mot de passe</h3>
+                                    <p class="mt-1 text-sm text-green-600">Remplissez uniquement si vous souhaitez changer le mot de passe</p>
+                                    
+                                    <div class="mt-4 space-y-4">
+                                        <div>
+                                            <label for="password" class="block text-sm font-medium text-gray-700">Nouveau mot de passe</label>
+                                            <input type="password" id="password" name="password"
+                                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500
+                                                @error('password') border-red-500 @enderror">
+                                            @error('password')
+                                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        
+                                        <div>
+                                            <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirmer le nouveau mot de passe</label>
+                                            <input type="password" id="password_confirmation" name="password_confirmation"
+                                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Boutons d'action -->
+                        <div class="flex items-center justify-between pt-6 border-t border-gray-200">
+                            <button type="button" onclick="return confirm('Voulez-vous vraiment supprimer cet agent?') ? document.getElementById('delete-form').submit() : false;"
+                                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                Supprimer l'agent
+                            </button>
+                            
+                            <div class="flex space-x-3">
+                                <a href="{{ route('admin.agents.index') }}" 
+                                   class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
+                                    Annuler
+                                </a>
+                                <button type="submit" 
+                                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
+                                    Mettre à jour
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Formulaire de suppression caché -->
+                    <form id="delete-form" action="{{ route('admin.agents.destroy', $agent) }}" method="POST" class="hidden">
+                        @csrf
+                        @method('DELETE')
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection

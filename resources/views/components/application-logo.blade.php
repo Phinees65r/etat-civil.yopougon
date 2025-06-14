@@ -1,0 +1,1 @@
+<img src="{{ asset('armoiries.png') }}" alt="Logo" class="h-10 w-auto">

@@ -7,9 +7,6 @@ RUN a2enmod rewrite
 COPY . /var/www/html
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Installer les dépendances
-RUN composer install --no-dev --optimize-autoloader
-
 # Configurer Apache
 COPY .docker/apache.conf /etc/apache2/sites-available/000-default.conf
 
